@@ -1,0 +1,68 @@
+# Schema Contracts — Medallion Architecture
+# Defines expected schemas per layer for validation and enforcement.
+
+bronze:
+  orders_raw:
+    description: "Raw orders from source systems"
+    schema_enforcement: false  # schema-on-read
+    required_columns:
+      - order_id
+      - customer_id
+    metadata_columns:
+      - _ingestion_timestamp
+      - _source_file
+      - _source_system
+      - _row_hash
+
+silver:
+  orders:
+    description: "Cleaned and deduplicated orders"
+    schema_enforcement: true
+    primary_key: [order_id]
+    columns:
+      - name: order_id
+        type: string
+        nullable: false
+      - name: customer_id
+        type: string
+        nullable: false
+      - name: product_id
+        type: string
+        nullable: true
+      - name: quantity
+        type: double
+        nullable: false
+        validation: ">= 0"
+      - name: unit_price
+        type: double
+        nullable: false
+        validation: ">= 0"
+      - name: total_amount
+        type: double
+        nullable: false
+      - name: order_date
+        type: date
+        nullable: true
+      - name: status
+        type: string
+        nullable: true
+        allowed_values: [pending, shipped, delivered, cancelled, processing]
+      - name: region
+        type: string
+        nullable: false
+        default: "UNKNOWN"
+
+gold:
+  daily_sales_summary:
+    description: "Daily aggregated sales by region"
+    primary_key: [order_date, region]
+    refresh: daily
+    consumers: [power_bi, executive_reporting]
+
+  customer_360:
+    description: "Customer-level profile and segmentation"
+    primary_key: [customer_id]
+    refresh: daily
+    consumers: [crm, marketing, ml_features]
+    pii_columns: [customer_id]
+    masking: dynamic  # Unity Catalog column masking

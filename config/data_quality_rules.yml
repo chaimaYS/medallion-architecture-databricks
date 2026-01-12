@@ -1,0 +1,45 @@
+# Data Quality Rules — Applied at Silver layer
+# Critical failures halt the pipeline. Warnings are logged.
+
+tables:
+  orders:
+    rules:
+      - name: no_null_keys
+        severity: critical
+        check: "order_id IS NOT NULL AND customer_id IS NOT NULL"
+        description: "Primary and foreign keys must not be null"
+
+      - name: no_duplicate_keys
+        severity: critical
+        check: "COUNT(order_id) = COUNT(DISTINCT order_id)"
+        description: "No duplicate order IDs allowed"
+
+      - name: valid_quantity
+        severity: critical
+        check: "quantity >= 0"
+        description: "Quantity must be non-negative"
+
+      - name: valid_price
+        severity: critical
+        check: "unit_price >= 0"
+        description: "Unit price must be non-negative"
+
+      - name: valid_status
+        severity: warning
+        check: "status IN ('pending', 'shipped', 'delivered', 'cancelled', 'processing')"
+        description: "Status must be a known value"
+
+      - name: freshness
+        severity: warning
+        check: "MAX(_ingestion_timestamp) > current_timestamp() - INTERVAL 24 HOURS"
+        description: "Data must be less than 24 hours old"
+
+      - name: completeness_region
+        severity: warning
+        check: "SUM(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) / COUNT(*) < 0.05"
+        description: "Less than 5% of records should have unknown region"
+
+      - name: row_count_threshold
+        severity: warning
+        check: "COUNT(*) > 0"
+        description: "Table must not be empty after processing"
