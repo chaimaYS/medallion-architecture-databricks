@@ -1,0 +1,36 @@
+{
+  "name": "medallion_dlt_pipeline",
+  "target": "main",
+  "libraries": [
+    {
+      "notebook": {
+        "path": "/Repos/production/medallion-architecture/notebooks/04_dlt_pipeline"
+      }
+    }
+  ],
+  "clusters": [
+    {
+      "label": "default",
+      "autoscale": {
+        "min_workers": 1,
+        "max_workers": 4,
+        "mode": "ENHANCED"
+      },
+      "spark_conf": {
+        "spark.sql.shuffle.partitions": "auto"
+      }
+    }
+  ],
+  "continuous": false,
+  "development": false,
+  "channel": "CURRENT",
+  "edition": "ADVANCED",
+  "photon": true,
+  "catalog": "main",
+  "notifications": [
+    {
+      "email_recipients": ["data-team@company.com"],
+      "alerts": ["on-update-failure", "on-flow-failure"]
+    }
+  ]
+}
