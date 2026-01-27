@@ -97,3 +97,4 @@ git clone https://github.com/chaimaYS/medallion-architecture-databricks.git
 # Update 2026-01-14
 # Update 2026-01-16
 # Update 2026-01-23
+# Update 2026-01-27
