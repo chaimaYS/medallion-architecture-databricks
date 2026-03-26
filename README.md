@@ -94,16 +94,3 @@ git clone https://github.com/chaimaYS/medallion-architecture-databricks.git
 **Chaima Yedes** — Data & AI Architect
 - [LinkedIn](https://www.linkedin.com/in/chaima-yedes/)
 - yedeschaima5@gmail.com
-# Update 2026-01-14
-# Update 2026-01-16
-# Update 2026-01-23
-# Update 2026-01-27
-# Update 2026-02-06
-# Update 2026-02-11
-# Update 2026-02-18
-# Update 2026-02-20
-# Update 2026-02-25
-# Update 2026-03-04
-# Update 2026-03-10
-# Update 2026-03-17
-# Update 2026-03-24
