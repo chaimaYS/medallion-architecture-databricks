@@ -113,3 +113,4 @@ for table in ["raw_images", "raw_videos"]:
     unique = spark.table(full_name).select("file_hash").distinct().count()
     dupes = total - unique
     print(f"{table}: {total} total, {unique} unique, {dupes} duplicates")
+# Streaming media
